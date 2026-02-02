@@ -1,0 +1,17 @@
+class Plant:
+    def __init__(self, name, height, age) -> None:
+        self.name = name
+        self.height = height
+        self.age = age
+
+
+plants = [
+    Plant("Rose", 25, 30),
+    Plant("Sunflower", 80, 45),
+    Plant("Cactus", 15, 120),
+]
+
+if __name__ == "__main__":
+    print("=== Garden Plant Registry ===")
+    for i in plants:
+        print(f"{i.name}: {i.height}cm, {i.age} days old")
