@@ -71,7 +71,7 @@ class GardenManager:
                 count += i.height
             return count
 
-        def count_types(self) -> int:
+        def count_types(self) -> dict:
             counts: dict = {
                 "plant": 0,
                 "flowering": 0,

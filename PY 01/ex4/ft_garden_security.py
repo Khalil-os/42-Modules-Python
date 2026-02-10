@@ -1,5 +1,5 @@
 class SecurePlant:
-    def __init__(self, name, height, age) -> None:
+    def __init__(self, name: str, height: int, age: int) -> None:
         self.name = name
         self._height = None
         self._age = None
