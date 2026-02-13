@@ -1,52 +1,67 @@
 class Plant:
+    """Represents a generic plant."""
     type_name = "plant"
 
     def __init__(self, name: str, height: int) -> None:
+        """Initialize plant attributes."""
         self.name = name
         self.height = height
 
     def print_info(self) -> None:
+        """Print plant information."""
         print(f"- {self.name}: {self.height}cm")
 
 
 class FloweringPlant(Plant):
+    """Represents a flowering plant."""
     type_name = "flowering"
 
     def __init__(self, name: str, height: int, color: str) -> None:
+        """Initialize flowering plant attributes."""
         super().__init__(name, height)
         self.color = color
 
     def print_info(self) -> None:
+        """Print flowering plant information."""
         print(f"- {self.name}: {self.height}cm, {self.color} "
               "flowers (blooming)")
 
 
 class PrizeFlower(FloweringPlant):
+    """Represents a prize-winning flower."""
     type_name = "prizeflower"
 
     def __init__(self, name: str, height: int, color: str, point: int) -> None:
+        """Initialize prize flower attributes."""
         super().__init__(name, height, color)
         self.point = point
 
     def print_info(self) -> None:
+        """Print prize flower information."""
         print(f"- {self.name}: {self.height}cm, {self.color} "
               f"flowers (blooming), Prize points: {self.point}")
 
 
 class GardenManager:
+    """Manages gardens and plant collections."""
+
     def __init__(self) -> None:
+        """Initialize the garden manager."""
         self.gardens = {}
 
     def add_garden(self, name: str) -> None:
+        """Create a new garden."""
         self.gardens[name] = []
 
     def add_plant(self, name: str, plant: Plant) -> None:
+        """Add a plant to a garden."""
         if name not in self.gardens:
             self.add_garden(name)
         self.gardens[name] += [plant]
         print(f"Added {plant.name} to {name}'s garden")
 
     def grow_all(self, name: str) -> None:
+        """Grow all plants in a garden."""
         if name not in self.gardens:
             return
         for i in self.gardens[name]:
@@ -56,22 +71,28 @@ class GardenManager:
             print(f"{i.name} grew 1cm")
 
     class GardenStats:
+        """Calculates statistics for a garden."""
+
         def __init__(self, plants: list) -> None:
+            """Initialize garden statistics."""
             self.plants = plants
 
         def count_plants(self) -> int:
+            """Count the number of plants."""
             count: int = 0
-            for i in self.plants:
+            for _ in self.plants:
                 count += 1
             return count
 
         def total_height(self) -> int:
-            count: int = 0
+            """Calculate total plant height."""
+            total: int = 0
             for i in self.plants:
-                count += i.height
-            return count
+                total += i.height
+            return total
 
-        def count_types(self) -> int:
+        def count_types(self) -> dict:
+            """Count plant types."""
             counts: dict = {
                 "plant": 0,
                 "flowering": 0,
@@ -82,6 +103,7 @@ class GardenManager:
             return counts
 
     def calculate_score(self, name: str) -> int:
+        """Calculate the score of a garden."""
         if name not in self.gardens:
             return 0
         total_score = 0
@@ -92,6 +114,7 @@ class GardenManager:
         return total_score
 
     def create_garden_network(cls, managers: list) -> None:
+        """Display scores for multiple gardens."""
         result = ""
         index = 0
         count = 0
@@ -110,10 +133,12 @@ class GardenManager:
     create_garden_network = classmethod(create_garden_network)
 
     def is_valid_height(height: int) -> bool:
+        """Check if a height value is valid."""
         return height >= 0
     is_valid_height = staticmethod(is_valid_height)
 
     def print_report(self, name: str) -> None:
+        """Print a garden report."""
         if name not in self.gardens:
             return
         print(f"=== {name}'s Garden Report ===", "\nPlants in garden:")
@@ -121,6 +146,7 @@ class GardenManager:
             i.print_info()
 
     def print_summary(self, name: str, growth: int) -> None:
+        """Print a summary of garden statistics."""
         if name not in self.gardens:
             return
 
