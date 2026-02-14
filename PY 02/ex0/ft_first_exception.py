@@ -3,24 +3,28 @@ def check_temperature(temp_str: str = None) -> None:
     try:
         if temp_str is None:
             raise ValueError("No Temperature Input Provided")
+        try:
+            temp = int(temp_str)
+        except ValueError:
+            print(f"Error: '{temp_str}' is not a valid number")
+            return
+        if temp > 40:
+            raise ValueError(f"Error: {temp}°C is too hot "
+                             "for plants (max 40°C)")
+        elif temp < 0:
+            raise ValueError(f"Error: {temp}°C is too cold "
+                             "for plants (min 0°C)")
+        else:
+            print(f"Temperature {temp}°C is perfect for plants!")
 
-        num = int(temp_str)
-    except ValueError:
-        print(f"Error: '{temp_str}' is not a valid number")
-        return
-
-    if num >= 0 and num <= 40:
-        print(f"Temperature {num}°C is perfect for plants!")
-    elif num < 0:
-        print(f"Error: {num}°C is too cold for plants (min 0°C)")
-    else:
-        print(f"Error: {num}°C is too hot for plants (max 40°C)")
+    except ValueError as e:
+        print(e)
 
 
 def test_temperature_input() -> None:
     print("=== Garden Temperature Checker ===\n")
 
-    check_temperature("25")
+    check_temperature("25.5")
     print()
     check_temperature("abc")
     print()
