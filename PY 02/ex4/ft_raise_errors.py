@@ -1,5 +1,6 @@
 def check_plant_health(plant_name: str, water_level: int,
                        sunlight_hours: int) -> str:
+    """Validate plant inputs and return a health status message."""
     if not plant_name:
         raise ValueError("Plant name cannot be empty!")
 
@@ -18,6 +19,7 @@ def check_plant_health(plant_name: str, water_level: int,
 
 
 def test_plant_checks() -> None:
+    """Test plant health validation with valid and invalid values."""
     print("=== Garden Plant Health Checker ===\n")
 
     print("Testing good values...")

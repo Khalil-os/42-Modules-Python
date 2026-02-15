@@ -1,4 +1,5 @@
 def garden_operations() -> None:
+    """Demonstrate handling of different built-in Python error types."""
     try:
         print("Testing ValueError...")
         val = "abc"
@@ -34,7 +35,8 @@ def garden_operations() -> None:
         print("Caught an error, but program continues!\n")
 
 
-def test_error_types():
+def test_error_types() -> None:
+    """Test the garden error demonstrations"""
     print("=== Garden Error Types Demo ===\n")
     garden_operations()
     print("All error types tested successfully!")

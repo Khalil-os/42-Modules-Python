@@ -1,4 +1,5 @@
 def check_temperature(temp_str: str = None) -> None:
+    """Validate whether a temperature value is suitable for plants."""
     print(f"Testing temperature: {temp_str}")
     try:
         if temp_str is None:
@@ -22,6 +23,7 @@ def check_temperature(temp_str: str = None) -> None:
 
 
 def test_temperature_input() -> None:
+    """Test temperature validation with valid and invalid inputs."""
     print("=== Garden Temperature Checker ===\n")
 
     check_temperature("25.5")
