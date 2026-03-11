@@ -26,7 +26,7 @@ def test_temperature_input() -> None:
     """Test temperature validation with valid and invalid inputs."""
     print("=== Garden Temperature Checker ===\n")
 
-    check_temperature("25.5")
+    check_temperature("25")
     print()
     check_temperature("abc")
     print()
