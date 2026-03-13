@@ -7,18 +7,17 @@ def stream_management() -> None:
     archivist_id = input("Input Stream active. Enter archivist ID: ")
     status = input("Input Stream active. Enter status report: ")
 
-    sys.stdout.write(
-        f"\n[STANDARD] Archive status from {archivist_id}: {status}\n")
-    sys.stderr.write(
-        "[ALERT] System diagnostic: Communication channels verified\n")
-    sys.stdout.write("[STANDARD] Data transmission complete\n")
+    print(f"\n[STANDARD] Archive status from {archivist_id}: {status}\n")
+    print("[ALERT] System diagnostic: Communication channels verified\n",
+          file=sys.stderr)
+    print("[STANDARD] Data transmission complete\n")
     print("\nThree-channel communication test successful.")
 
 
 if __name__ == "__main__":
     try:
         stream_management()
+    except KeyboardInterrupt:
+        print("\n[ALERT] Input interrupted by user.", file=sys.stderr)
     except Exception as e:
         print(e)
-    except KeyboardInterrupt:
-        sys.stderr.write("\n[ALERT] Input interrupted by user.")
