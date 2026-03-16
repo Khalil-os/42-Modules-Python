@@ -16,6 +16,7 @@ class DataStream(ABC):
 
     def filter_data(self, data_batch: List[Any], criteria: Optional[str] = None
                     ) -> List[Any]:
+        """Default filter implementation."""
         if criteria is None:
             return data_batch
         return [d for d in data_batch if criteria in str(d)]
@@ -45,9 +46,12 @@ class SensorStream(DataStream):
             self.processed += count
 
             if not temps:
-                return f"Sensor data: {count} readings processed"
+                return f"Sensor analysis: {count} readings processed"
 
             avg_temp: float = sum(temps) / len(temps)
+
+            if avg_temp > 40:
+                return "ALERT: High temperature detected"
 
             return (
                 f"Sensor analysis: {count} readings processed, "
@@ -56,13 +60,6 @@ class SensorStream(DataStream):
 
         except Exception as error:
             return f"Sensor processing error: {error}"
-
-    def filter_data(self, data_batch: List[Any], criteria: Optional[str] = None
-                    ) -> List[Any]:
-        if criteria == "critical":
-            return [x for x in data_batch
-                    if "temp" in x and float(x.split(":")[1]) >= 30]
-        return super().filter_data(data_batch, criteria)
 
 
 class TransactionStream(DataStream):
@@ -86,23 +83,11 @@ class TransactionStream(DataStream):
             count: int = len(data_batch)
             self.processed += count
 
-            if flow == 0:
-                return f"Transaction data: {count} operations processed"
-
-            return (
-                f"Transaction analysis: {count} operations, "
-                f"net flow: {flow:+} units"
-            )
+            return (f"Transaction analysis: {count} operations, "
+                    f"net flow: {flow:+} units")
 
         except Exception as error:
             return f"Transaction processing error: {error}"
-
-    def filter_data(self, data_batch: List[Any], criteria: Optional[str] = None
-                    ) -> List[Any]:
-        if criteria == "large":
-            return [x for x in data_batch
-                    if int(x.split(":")[1]) > 40]
-        return super().filter_data(data_batch, criteria)
 
 
 class EventStream(DataStream):
@@ -119,9 +104,6 @@ class EventStream(DataStream):
 
             self.processed += count
 
-            if error_count == 0:
-                return f"Event data: {count} events processed"
-
             return (
                 f"Event analysis: {count} events, "
                 f"{error_count} error detected"
@@ -129,16 +111,6 @@ class EventStream(DataStream):
 
         except Exception as error:
             return f"Event processing error: {error}"
-
-    def filter_data(self, data_batch: List[Any], criteria: Optional[str] = None
-                    ) -> List[Any]:
-        if criteria == "error":
-            return [
-                e for e in data_batch
-                if "error" in e.lower()
-            ]
-
-        return super().filter_data(data_batch, criteria)
 
 
 class StreamProcessor:
@@ -189,35 +161,25 @@ def main() -> None:
     processor.add_stream(trans)
     processor.add_stream(event)
 
-    processor_sensor_batch = ["humidity:30", "pressure:1000"]
-    processor_trans_batch = ["buy:10", "sell:10", "buy:5", "sell:5"]
-    processor_event_batch = ["login", "start", "logout"]
-
-    batches = [
-        processor_sensor_batch,
-        processor_trans_batch,
-        processor_event_batch
-    ]
-
-    print("\nBatch 1 Results:")
-    processor.process_streams(batches)
-
-    sensor_data = ["temp:30", "temp:35"]
+    sensor_data = ["ssss:30", "sss:35"]
     trans_data = ["buy:50", "sell:10", "buy:40", "sell:5"]
+    event_data = ["login", "error", "logout"]
+
+    batches = [sensor_data, trans_data, event_data]
+
+    print("Batch 1 Results:")
+    processor.process_streams(batches)
 
     print("\nStream filtering active: High-priority data only")
 
-    critical_sensors = sensor.filter_data(sensor_data, "critical")
-    large_transactions = trans.filter_data(trans_data, "large")
+    critical_sensors = [x for x in sensor_data if float(x.split(":")[1]) >= 30]
+    large_transactions = [x for x in trans_data if int(x.split(":")[1]) > 40]
 
     print(f"Filtered results: {len(critical_sensors)} critical sensor alerts, "
-          f"{len(large_transactions)} large transaction")
+          f"{len(large_transactions)} large transactions")
 
     print("\nAll streams processed successfully. Nexus throughput optimal.")
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        print(e)
+    main()
