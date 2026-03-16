@@ -6,3 +6,13 @@ def record_spell(spell_name: str, ingredients: str) -> str:
         return f"Spell recorded: {spell_name} ({result})"
     else:
         return f"Spell rejected: {spell_name} ({result})"
+
+
+def record_spell_injected(spell_name: str, ingredients: str, validator) -> str:
+
+    result = validator(ingredients)
+
+    if "VALID" in result:
+        return f"Spell recorded: {spell_name} ({result})"
+    else:
+        return f"Spell rejected: {spell_name} ({result})"
