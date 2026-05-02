@@ -1,7 +1,6 @@
 from datetime import datetime
 from enum import Enum
 from typing import List
-
 from pydantic import BaseModel, Field, ValidationError, model_validator
 
 
@@ -35,12 +34,8 @@ class SpaceMission(BaseModel):
 
     @model_validator(mode="after")
     def validate_mission(self) -> "SpaceMission":
-
-        # Rule 1: ID must start with M
         if not self.mission_id.startswith("M"):
             raise ValueError("Mission ID must start with 'M'")
-
-        # Rule 2: at least one commander or captain
         has_leader = any(
             member.rank in (Rank.commander, Rank.captain)
             for member in self.crew
@@ -49,8 +44,6 @@ class SpaceMission(BaseModel):
             raise ValueError(
                 "Mission must have at least one Commander or Captain"
             )
-
-        # Rule 3: long mission → 50% experienced
         if self.duration_days > 365:
             experienced = [
                 m for m in self.crew if m.years_experience >= 5
@@ -59,8 +52,6 @@ class SpaceMission(BaseModel):
                 raise ValueError(
                     "Long missions need at least 50% experienced crew"
                 )
-
-        # Rule 4: all crew active
         if any(not m.is_active for m in self.crew):
             raise ValueError("All crew members must be active")
 
@@ -76,7 +67,6 @@ def display_mission(mission: SpaceMission) -> None:
     print(f"Budget: ${mission.budget_millions}M")
     print(f"Crew size: {len(mission.crew)}")
     print("Crew members:")
-
     for member in mission.crew:
         print(
             f"- {member.name} ({member.rank.value}) - "
