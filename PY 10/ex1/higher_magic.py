@@ -37,15 +37,19 @@ def spell_sequence(spells: List[Callable]) -> Callable:
 
 def main():
     target = "Dragon"
-
     print("Testing spell combiner...")
     combined = spell_combiner(fireball, heal)
     r1, r2 = combined(target, 10)
     print(f"Combined spell result: {r1}, {r2}")
-
     print("\nTesting power amplifier...")
+    mega_fireball = power_amplifier(fireball, 3)
+    _ = fireball(target, 10)
+    _ = mega_fireball(target, 10)
     print("Original: 10, Amplified: 30")
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(e)
